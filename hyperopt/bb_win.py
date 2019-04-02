@@ -104,6 +104,7 @@ def score_func(params):
     perf = run_algorithm(
         capital_base=1000000,
         data_frequency='daily',
+        bundle='mongo',
         initialize=initialize,
         handle_data=handle_data,
         analyze=analyze,
