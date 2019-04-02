@@ -131,21 +131,3 @@ def objective(hyper_params):
 #     sys.exit(mongoexp.main_worker())
 
 
-if __name__ == '__main__':
-    tpe_trials = MongoTrials('mongo://localhost:27018/foo_db/jobs',
-                             exp_key='exp1')
-    opt_params = fmin(fn=objective,
-                      space=hyper_params_space,
-                      algo=tpe.suggest,
-                      max_evals=300,
-                      trials=tpe_trials,
-                      rstate=np.random.RandomState(100))
-    tpe_results = pd.DataFrame(
-        {'score': [x['loss'] for x in tpe_trials.results],
-         'timeperiod': tpe_trials.idxs_vals[1]['timeperiod'],
-         'nbdevup': tpe_trials.idxs_vals[1]['nbdevup'],
-         'nbdevdn': tpe_trials.idxs_vals[1]['nbdevdn']})
-    tpe_results.sort_values(by=['score'], inplace=True)
-
-    print(tpe_results.head(10))
-    print(opt_params)
