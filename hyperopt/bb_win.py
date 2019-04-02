@@ -150,8 +150,7 @@ opt_params = fmin(fn=objective,
                   space=hyper_params_space,
                   algo=tpe.suggest,
                   max_evals=300,
-                  trials=tpe_trials,
-                  rstate=np.random.RandomState(100))
+                  trials=tpe_trials)
 
 tpe_results = pd.DataFrame({'score': [x['loss'] for x in tpe_trials.results],
                             'timeperiod': tpe_trials.idxs_vals[1]['timeperiod'],
