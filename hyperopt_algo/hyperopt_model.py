@@ -15,7 +15,7 @@ import pandas as pd
 from hyperopt import fmin, tpe
 from hyperopt.mongoexp import MongoTrials
 
-from hyperopt_model.bb_win import objective, hyper_params_space
+from hyperopt_algo.bb_win import objective, hyper_params_space
 
 if __name__ == '__main__':
     tpe_trials = MongoTrials('mongo://localhost:27018/foo_db/jobs',
