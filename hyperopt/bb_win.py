@@ -1,7 +1,12 @@
 #!/usr/local/bin/python3
 # coding=utf-8
 __author__ = 'chiyuen_woo'
+import numpy as np
+import pandas as pd
 import talib
+from hyperopt import fmin, tpe
+from hyperopt import hp
+from hyperopt.mongoexp import MongoTrials
 from zipline import run_algorithm
 # *******************************************************************
 #     Filename @  bb_win.py
@@ -19,11 +24,6 @@ from zipline.api import (
     record,
 
     symbol)
-from hyperopt import Trials, fmin, tpe
-from hyperopt import hp
-import numpy as np
-import pandas as pd
-import datetime
 
 
 def score_func(params):
@@ -117,7 +117,8 @@ def objective(hyper_params):
     return result
 
 
-tpe_trials = Trials()
+tpe_trials = MongoTrials('mongo://localhost:27018/foo_db/jobs', exp_key='exp1')
+
 opt_params = fmin(fn=objective,
                   space=hyper_params_space,
                   algo=tpe.suggest,
