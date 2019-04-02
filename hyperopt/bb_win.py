@@ -45,22 +45,6 @@ def score_func(params):
         context.BBANDS_timeperiod = params['timeperiod']
         context.BBANDS_nbdevup = params['nbdevup']
         context.BBANDS_nbdevdn = params['nbdevdn']
-        UseParams = False
-        try:
-            Nparams = len(context.algo_params)
-            if Nparams == 3:
-                UseParams = True
-            else:
-                print('len context.algo_params is', Nparams, ' expecting 3')
-
-        except Exception as e:
-            print('context.algo_params not passed')
-
-        if UseParams:
-            print('Setting Algo parameters via passed algo_params')
-            context.BBANDS_timeperiod = context.algo_params['timeperiod']
-            context.BBANDS_nbdevup = context.algo_params['nbdevup']
-            context.BBANDS_nbdevdn = context.algo_params['nbdevdn']
 
     def handle_data(context, data):
         context.iwarmup = context.iwarmup + 1
