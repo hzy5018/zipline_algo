@@ -121,7 +121,7 @@ def objective(hyper_params):
     return result
 
 
-def task2():
+def task2(msg):
     tpe_trials = MongoTrials('mongo://localhost:27018/foo_db/jobs',
                              exp_key='exp1')
     opt_params = fmin(fn=objective,
@@ -139,6 +139,7 @@ def task2():
 
     print(tpe_results.head(10))
     print(opt_params)
+    print(msg)
     print('task2 is running')
     return opt_params
 
