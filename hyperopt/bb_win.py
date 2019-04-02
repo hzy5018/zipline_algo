@@ -35,7 +35,7 @@ def score_func(params):
     #     return renko_obj.evaluate()[column_name]
 
     def initialize(context):
-        context.secs = [symbol('SPY')]
+        context.secs = [symbol('000001.SZ')]
         context.history_depth = 30
         context.iwarmup = 0
         #     add_history(30, '1d', 'price')
