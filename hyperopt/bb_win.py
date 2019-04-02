@@ -7,7 +7,10 @@ import talib
 from hyperopt import fmin, tpe
 from hyperopt import hp
 from hyperopt.mongoexp import MongoTrials
+from hyperopt import mongoexp
 from zipline import run_algorithm
+import logging
+import sys
 # *******************************************************************
 #     Filename @  bb_win.py
 #       Author @  chiyuen_woo
@@ -25,6 +28,7 @@ from zipline.api import (
 
     symbol)
 from multiprocessing import Pool, Process
+
 
 def score_func(params):
     # # Function for Renko brick optimization
@@ -117,7 +121,7 @@ def objective(hyper_params):
     return result
 
 
-def task():
+def task2():
     tpe_trials = MongoTrials('mongo://localhost:27018/foo_db/jobs',
                              exp_key='exp1')
     opt_params = fmin(fn=objective,
@@ -139,13 +143,22 @@ def task():
     return opt_params
 
 
+def task1():
+    logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+    print('task1 running')
+    sys.exit(mongoexp.main_worker())
+
+
 if __name__ == '__main__':
     pool = Pool(processes=4)
-    p = Process(target=task)
+    p = Process(target=task1)
 
     p.start()
+    ret = pool.apply_async(task2, args=(1,))
+
     pool.close()
     pool.join()
     p.join()
 
     print('processes done, result:')
+    print(ret.get())
