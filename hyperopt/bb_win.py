@@ -121,7 +121,17 @@ def objective(hyper_params):
     return result
 
 
-def task2(msg):
+# def task2():
+#
+#
+#
+# def task1():
+#     logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+#     print('task1 running')
+#     sys.exit(mongoexp.main_worker())
+
+
+if __name__ == '__main__':
     tpe_trials = MongoTrials('mongo://localhost:27018/foo_db/jobs',
                              exp_key='exp1')
     opt_params = fmin(fn=objective,
@@ -139,27 +149,3 @@ def task2(msg):
 
     print(tpe_results.head(10))
     print(opt_params)
-    print(msg)
-    print('task2 is running')
-    return opt_params
-
-
-def task1():
-    logging.basicConfig(stream=sys.stderr, level=logging.INFO)
-    print('task1 running')
-    sys.exit(mongoexp.main_worker())
-
-
-if __name__ == '__main__':
-    pool = Pool(processes=4)
-    p = Process(target=task1)
-
-    p.start()
-    ret = pool.apply_async(task2, args=(1,))
-
-    pool.close()
-    pool.join()
-    p.join()
-
-    print('processes done, result:')
-    print(ret.get())
