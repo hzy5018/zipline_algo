@@ -118,22 +118,9 @@ def score_func(params):
         return (-1.0) * perf.sortino[-1]
 
 
-period_weights = [0.2, 0.2, 0.2, 0.2, 0.2]
-
-start_date = datetime.datetime.strptime("1-6-2018", "%d-%m-%Y")
-end_date = datetime.datetime.strptime("31-10-2018", "%d-%m-%Y")
-total_days = (end_date - start_date).days + 1
-
-folds_start_date = [start_date] + [
-    start_date + datetime.timedelta(days=round(total_days * x)) for x in
-    np.cumsum(period_weights)[:-1]]
-folds_end_date = [
-    start_date + datetime.timedelta(days=round(total_days * x) - 1) for x in
-    np.cumsum(period_weights)]
-
-hyper_params_space = {'timeperiod': hp.uniform('timeperiod', 10, 25, 1),
-                      'nbdevup': hp.uniform('nbdevup', 0.5, 2.5, 1),
-                      'nbdevdn': hp.uniform('nbdevdn', 0.5, 2.5, 1)}
+hyper_params_space = {'timeperiod': hp.uniform('timeperiod', 10, 25),
+                      'nbdevup': hp.uniform('nbdevup', 0.5, 2.5),
+                      'nbdevdn': hp.uniform('nbdevdn', 0.5, 2.5)}
 
 
 def weighted_mean(values):
@@ -150,7 +137,8 @@ opt_params = fmin(fn=objective,
                   space=hyper_params_space,
                   algo=tpe.suggest,
                   max_evals=300,
-                  trials=tpe_trials)
+                  trials=tpe_trials,
+                  rstate=np.random.RandomState(100))
 
 tpe_results = pd.DataFrame({'score': [x['loss'] for x in tpe_trials.results],
                             'timeperiod': tpe_trials.idxs_vals[1]['timeperiod'],
