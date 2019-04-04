@@ -39,7 +39,7 @@ def initialize(context):
     )
 
     # Create our pipeline and attach it to our algorithm.
-    my_pipe = make_pipeline(10, 2)
+    my_pipe = make_pipeline(20, 2)
     attach_pipeline(my_pipe, 'my_pipeline')
 
 
